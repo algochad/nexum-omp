@@ -1,0 +1,36 @@
+{
+  "name": "nexum-omp",
+  "version": "0.1.0",
+  "description": "Nexum (Dialagram) provider extension for omp — /login, live model discovery, multi-key rotation",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jhon Burn Villamor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algochad/nexum-omp.git"
+  },
+  "keywords": [
+    "omp",
+    "oh-my-pi",
+    "extension",
+    "provider",
+    "nexum",
+    "dialagram"
+  ],
+  "omp": {
+    "extensions": [
+      "./src/index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@oh-my-pi/pi-coding-agent": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@oh-my-pi/pi-coding-agent": "^18.3.0",
+    "typescript": "^5.6.0"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test:load": "omp models -e ./src/index.ts nexum"
+  }
+}
