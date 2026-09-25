@@ -1,7 +1,7 @@
 {
   "name": "nexum-omp",
   "version": "0.1.0",
-  "description": "Nexum (Dialagram) provider extension for omp — /login, live model discovery, multi-key rotation",
+  "description": "Nexum (Dialagram) provider extension for omp — /login, live model discovery, multi-key rotation. Install: omp plugin install github:algochad/nexum-omp",
   "type": "module",
   "license": "MIT",
   "author": "Jhon Burn Villamor",
@@ -16,6 +16,15 @@
     "provider",
     "nexum",
     "dialagram"
+  ],
+  "homepage": "https://github.com/algochad/nexum-omp#readme",
+  "bugs": {
+    "url": "https://github.com/algochad/nexum-omp/issues"
+  },
+  "files": [
+    "src/**/*.ts",
+    "README.md",
+    "LICENSE"
   ],
   "omp": {
     "extensions": [
