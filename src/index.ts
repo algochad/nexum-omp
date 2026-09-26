@@ -7,7 +7,8 @@
  * - `/login nexum` prompts for an API key, validates it against /v1/models,
  *   and stores it in the auth store. Run it once per key: every stored
  *   credential participates in omp's multi-account selection/rotation.
- * - `NEXUM_API_KEY` env var works as a key fallback.
+ * - No `NEXUM_API_KEY` env fallback: extension providers cannot register one
+ *   (see the `authHeader` note below), so authenticate with `/login nexum`.
  * - Model list is discovered live from GET /v1/models (24 h model cache,
  *   refreshed with `omp models refresh`).
  */
@@ -58,11 +59,16 @@ export default function nexumProvider(pi: ExtensionAPI): void {
 	pi.registerProvider(PROVIDER_ID, {
 		baseUrl: BASE_URL,
 		api: "openai-completions",
-		// Env-var fallback for the auth cascade. The credential store resolves
-		// this name to $NEXUM_API_KEY per request; /login credentials apply when
-		// it is unset. NOTE: `envKeys` inside `oauth` is silently dropped for
-		// extension-registered providers, so the fallback must live here.
-		apiKey: "NEXUM_API_KEY",
+		// No `apiKey` here on purpose. `apiKey` is registered as a *config
+		// override*, which outranks stored credentials in the auth cascade
+		// (runtime > config > OAuth > login key > env > stored key), so setting
+		// it to "NEXUM_API_KEY" pinned every request to that one env key, killed
+		// multi-key rotation, and 401'd with the literal string when the env var
+		// was unset. `ProviderConfig` has no `envKeys` field, so an
+		// extension-registered provider cannot get a real env fallback; leaving
+		// it unset lets the cascade reach the `/login` credentials in the store,
+		// which is what enables session stickiness, cross-session round-robin,
+		// and automatic rotation to a sibling key on usage-limit hits.
 		authHeader: true,
 		oauth: {
 			name: "Nexum (Dialagram)",
